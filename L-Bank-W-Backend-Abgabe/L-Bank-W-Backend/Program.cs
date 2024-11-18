@@ -1,5 +1,6 @@
 using L_Bank_W_Backend.Core;
 using L_Bank_W_Backend.DbAccess;
+using L_Bank_W_Backend.DbAccess.Repositories;
 using L_Bank_W_Backend.Models;
 using L_Bank_W_Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using L_Bank_W_Backend.Core.Models;
 using L_Bank_W_Backend.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace L_Bank_W_Backend.Services;
@@ -10,13 +11,13 @@ public class LoginService : ILoginService
 {
     private readonly JwtSettings jwtSettings;
 
-    public LoginService(JwtSettings jwtSettings)
+    public LoginService(IOptions<JwtSettings> jwtSettings)
     {
-        this.jwtSettings = jwtSettings;
+        this.jwtSettings = jwtSettings.Value;
         
         if(string.IsNullOrWhiteSpace(this.jwtSettings.IssuerSigninKey))
         {
-            throw new ArgumentNullException(nameof(jwtSettings.IssuerSigninKey));
+            throw new ArgumentNullException(nameof(this.jwtSettings.IssuerSigninKey));
         }
     }
     

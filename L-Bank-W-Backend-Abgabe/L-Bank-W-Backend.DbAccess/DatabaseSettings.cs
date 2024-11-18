@@ -1,4 +1,4 @@
-namespace L_Bank_W_Backend.Core;
+namespace L_Bank_W_Backend.DbAccess;
 
 public class DatabaseSettings
 {

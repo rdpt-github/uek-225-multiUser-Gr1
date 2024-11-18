@@ -1,6 +1,8 @@
 ﻿using System.Data.SqlClient;
 using L_Bank_W_Backend.Core;
 using L_Bank_W_Backend.Core.Models;
+using L_Bank_W_Backend.DbAccess;
+using Microsoft.Extensions.Options;
 
 namespace L_Bank_W_Backend.Services
 {
@@ -8,9 +10,9 @@ namespace L_Bank_W_Backend.Services
     {
         private readonly DatabaseSettings settings;
 
-        public UserService(DatabaseSettings settings)
+        public UserService(IOptions<DatabaseSettings> settings)
         {
-            this.settings = settings;
+            this.settings = settings.Value;
         }
 
         public User? Authenticate(string? username, string? password)

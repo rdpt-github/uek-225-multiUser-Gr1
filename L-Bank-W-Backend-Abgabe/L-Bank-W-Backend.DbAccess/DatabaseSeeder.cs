@@ -2,6 +2,7 @@
 using L_Bank_W_Backend.Core;
 using L_Bank_W_Backend.Core.Helper;
 using L_Bank_W_Backend.Core.Models;
+using Microsoft.Extensions.Options;
 
 namespace L_Bank_W_Backend.DbAccess
 {
@@ -9,9 +10,9 @@ namespace L_Bank_W_Backend.DbAccess
     {
         private readonly DatabaseSettings databaseSettings;
 
-        public DatabaseSeeder(DatabaseSettings databaseSettings)
+        public DatabaseSeeder(IOptions<DatabaseSettings> databaseSettings)
         {
-            this.databaseSettings = databaseSettings;
+            this.databaseSettings = databaseSettings.Value;
         }
 
         public void Initialize()

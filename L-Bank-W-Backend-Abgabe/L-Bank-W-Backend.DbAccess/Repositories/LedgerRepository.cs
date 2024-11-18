@@ -1,17 +1,17 @@
 using System.Data;
 using System.Data.SqlClient;
-using L_Bank_W_Backend.Core;
 using L_Bank_W_Backend.Core.Models;
+using Microsoft.Extensions.Options;
 
-namespace L_Bank_W_Backend.DbAccess;
+namespace L_Bank_W_Backend.DbAccess.Repositories;
 
 public class LedgerRepository : ILedgerRepository
 {
     private readonly DatabaseSettings databaseSettings;
 
-    public LedgerRepository(DatabaseSettings databaseSettings)
+    public LedgerRepository(IOptions<DatabaseSettings> databaseSettings)
     {
-        this.databaseSettings = databaseSettings;
+        this.databaseSettings = databaseSettings.Value;
     }
 
     public IEnumerable<Ledger> GetAllLedgers()
