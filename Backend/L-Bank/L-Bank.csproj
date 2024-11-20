@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\L-Bank-W-Backend.Core\L-Bank-W-Backend.Core.csproj" />
-    <ProjectReference Include="..\L-Bank-W-Backend.DbAccess\L-Bank-W-Backend.DbAccess.csproj" />
+    <ProjectReference Include="..\L-Bank.Core\L-Bank.Core.csproj" />
+    <ProjectReference Include="..\L-Bank.DbAccess\L-Bank.DbAccess.csproj" />
   </ItemGroup>
 
 </Project>

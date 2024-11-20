@@ -54,7 +54,6 @@ namespace L_Bank_W_Backend
             builder.Services.AddTransient<ILoginService, LoginService>();
             builder.Services.AddTransient<IBookingRepository, BookingRepository>();
             
-            
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
