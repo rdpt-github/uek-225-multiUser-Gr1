@@ -1,4 +1,4 @@
-namespace L_Bank_W_Backend.Models;
+namespace L_Bank_W_Backend;
 
 public class JwtSettings
 {

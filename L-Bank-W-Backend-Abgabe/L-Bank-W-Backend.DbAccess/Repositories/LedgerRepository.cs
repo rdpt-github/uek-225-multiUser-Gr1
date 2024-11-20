@@ -18,7 +18,7 @@ public class LedgerRepository : ILedgerRepository
     {
         var allLedgers = new List<Ledger>();
 
-        const string query = @"SELECT id, name, balance FROM ledgers ORDER BY name";
+        const string query = @$"SELECT id, name, balance FROM {Ledger.CollectionName} ORDER BY name";
         bool worked;
         do
         {
@@ -121,7 +121,7 @@ public class LedgerRepository : ILedgerRepository
     public Ledger? SelectOne(int id, SqlConnection conn, SqlTransaction? transaction)
     {
         Ledger? retLedger;
-        const string query = @"SELECT id, name, balance FROM ledgers WHERE id=@Id";
+        const string query = @$"SELECT id, name, balance FROM {Ledger.CollectionName} WHERE id=@Id";
 
         using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
         {
@@ -144,7 +144,7 @@ public class LedgerRepository : ILedgerRepository
     
     public void Update(Ledger ledger, SqlConnection conn, SqlTransaction? transaction)
     {
-        const string query = "UPDATE ledgers SET name=@Name, balance=@Balance WHERE id=@Id";
+        const string query = $"UPDATE {Ledger.CollectionName} SET name=@Name, balance=@Balance WHERE id=@Id";
         using (var cmd = new SqlCommand(query, conn, transaction))
         {
             cmd.Parameters.AddWithValue("@Name", ledger.Name);

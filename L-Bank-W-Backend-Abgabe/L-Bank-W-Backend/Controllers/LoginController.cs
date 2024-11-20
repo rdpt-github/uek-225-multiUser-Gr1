@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using L_Bank_W_Backend.Core.Models;
+using L_Bank_W_Backend.Dto;
 using L_Bank_W_Backend.Services;
 
 namespace L_Bank_W_Backend.Controllers
@@ -16,12 +17,12 @@ namespace L_Bank_W_Backend.Controllers
     [Route("api/v1/[controller]")]
     public class LoginController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly IUserRepository userRepository;
         private readonly ILoginService loginService;
 
-        public LoginController(IUserService userService, ILoginService loginService)
+        public LoginController(IUserRepository userRepository, ILoginService loginService)
         {
-            this.userService = userService ?? throw new System.ArgumentNullException(nameof(userService));
+            this.userRepository = userRepository ?? throw new System.ArgumentNullException(nameof(userRepository));
             this.loginService = loginService ?? throw new System.ArgumentNullException(nameof(loginService));
         }
         
@@ -32,7 +33,7 @@ namespace L_Bank_W_Backend.Controllers
             {
                 IActionResult response;
 
-                User? user = this.userService.Authenticate(login.Username, login.Password);
+                User? user = this.userRepository.Authenticate(login.Username, login.Password);
                 
                 if (user == null)
                 {

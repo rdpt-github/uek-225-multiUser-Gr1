@@ -56,7 +56,7 @@ namespace L_Bank_W_Backend.DbAccess
                 command.ExecuteNonQuery();
             }
 
-            const string createUsersDbQuery = @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' and xtype='U')
+            const string createUsersDbQuery = @$"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='{User.CollectionName}' and xtype='U')
                 BEGIN
                     CREATE TABLE users (
                         id int IDENTITY(1,1) PRIMARY KEY,
@@ -93,7 +93,7 @@ namespace L_Bank_W_Backend.DbAccess
 
         private void SeedLedgers()
         {
-            if (!IsEmpty("ledgers"))
+            if (!IsEmpty(Ledger.CollectionName))
             {
                 return;
             }

@@ -15,11 +15,11 @@ namespace L_Bank_W_Backend.Controllers
     [Route("api/v1/[controller]")]
     public class BookingsController : ControllerBase
     {
-        private readonly IBookingService bookingService;
+        private readonly IBookingRepository bookingRepository;
         
-        BookingsController(IBookingService bookingService)
+        BookingsController(IBookingRepository bookingRepository)
         {
-            this.bookingService = bookingService;
+            this.bookingRepository = bookingRepository;
         }
         
         [HttpPost]

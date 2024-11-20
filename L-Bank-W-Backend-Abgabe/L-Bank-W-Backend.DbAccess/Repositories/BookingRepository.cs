@@ -4,7 +4,7 @@ using System.Data;
 
 namespace L_Bank_W_Backend.Models
 {
-    public class BookingService : IBookingService
+    public class BookingRepository : IBookingRepository
     {
         public bool Book(int sourceLedgerId, int destinationLKedgerId, decimal amount)
         {

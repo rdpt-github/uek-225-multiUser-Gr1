@@ -1,16 +1,16 @@
 ﻿using System.Data.SqlClient;
-using L_Bank_W_Backend.Core;
+using L_Bank_W_Backend.Core.Helper;
 using L_Bank_W_Backend.Core.Models;
-using L_Bank_W_Backend.DbAccess;
+using L_Bank_W_Backend.Services;
 using Microsoft.Extensions.Options;
 
-namespace L_Bank_W_Backend.Services
+namespace L_Bank_W_Backend.DbAccess.Repositories
 {
-    public class UserService : IUserService
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseSettings settings;
 
-        public UserService(IOptions<DatabaseSettings> settings)
+        public UserRepository(IOptions<DatabaseSettings> settings)
         {
             this.settings = settings.Value;
         }
@@ -19,7 +19,7 @@ namespace L_Bank_W_Backend.Services
         {
             User retUser;
 
-            const string query = @"SELECT id, username, password_hash, role FROM users WHERE username=@Username";
+            const string query = @$"SELECT id, username, password_hash, role FROM {User.CollectionName} WHERE username=@Username";
             using (SqlConnection conn = new SqlConnection(this.settings.ConnectionString))
             {
                 conn.Open();
@@ -38,7 +38,7 @@ namespace L_Bank_W_Backend.Services
 
                         retUser = new User { Id = ordId, Username = ordUsername, PasswordHash = ordPasswordHash, Role = ordRole };
                         
-                        if(!VerifyPassword(password, retUser))
+                        if(!PasswordHelper.VerifyPassword(password, retUser))
                         {
                             return null;
                         }
@@ -53,7 +53,7 @@ namespace L_Bank_W_Backend.Services
         {
             User retUser;
 
-            const string query = @"SELECT id, username, password_hash, role FROM users WHERE id=@Id";
+            const string query = $@"SELECT id, username, password_hash, role FROM {User.CollectionName} WHERE id=@Id";
             using (SqlConnection conn = new SqlConnection(this.settings.ConnectionString))
             {
                 conn.Open();
@@ -80,7 +80,7 @@ namespace L_Bank_W_Backend.Services
 
         public void Update(User user, SqlConnection conn, SqlTransaction transaction)
         {
-            const string query = "UPDATE users SET username=@Username, password_hash=@PasswordHash, role=@Role WHERE id=@Id";
+            const string query = $"UPDATE {User.CollectionName} SET username=@Username, password_hash=@PasswordHash, role=@Role WHERE id=@Id";
             using (var cmd = new SqlCommand(query, conn, transaction))
             {
                 cmd.Parameters.AddWithValue("@Username", user.Username);
@@ -96,7 +96,7 @@ namespace L_Bank_W_Backend.Services
         public User Insert(User user, SqlConnection conn, SqlTransaction transaction)
         {
             int id;
-            const string query = "INSERT INTO users (name, password_hash, role) VALUES (@Username, @PasswordHash, @Role)";
+            const string query = $"INSERT INTO {User.CollectionName} (name, password_hash, role) VALUES (@Username, @PasswordHash, @Role)";
             using (var cmd = new SqlCommand(query, conn, transaction))
             {
                 cmd.Parameters.AddWithValue("@Username", user.Username);
@@ -111,7 +111,7 @@ namespace L_Bank_W_Backend.Services
 
         public void Delete(int id, SqlConnection conn, SqlTransaction transaction)
         {
-            const string query = "DELETE FROM users WHERE id=@Id";
+            const string query = $"DELETE FROM {User.CollectionName} WHERE id=@Id";
             using (var cmd = new SqlCommand(query, conn, transaction))
             {
                 cmd.Parameters.AddWithValue("@Id", id);
@@ -120,11 +120,5 @@ namespace L_Bank_W_Backend.Services
                 cmd.ExecuteNonQuery();
             }
         }
-        
-        private bool VerifyPassword(string? clearTextPassword, User user)
-        {
-            return BCrypt.Net.BCrypt.Verify(clearTextPassword, user.PasswordHash);
-        }
-
     }
 }

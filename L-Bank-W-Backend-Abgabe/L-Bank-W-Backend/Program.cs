@@ -50,9 +50,9 @@ namespace L_Bank_W_Backend
 
             builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
             builder.Services.AddTransient<ILedgerRepository, LedgerRepository>();
-            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<ILoginService, LoginService>();
-            builder.Services.AddTransient<IBookingService, BookingService>();
+            builder.Services.AddTransient<IBookingRepository, BookingRepository>();
             
             
             builder.Services.AddControllers();
@@ -91,7 +91,7 @@ namespace L_Bank_W_Backend
                 try
                 {
                     // Example: Run a startup task
-                    var databaseSeeder = services.GetRequiredService<DatabaseSeeder>();     
+                    var databaseSeeder = services.GetRequiredService<IDatabaseSeeder>();     
                     Console.WriteLine("Initializing database.");
                     databaseSeeder.Initialize();
                     Console.WriteLine("Seeding data.");

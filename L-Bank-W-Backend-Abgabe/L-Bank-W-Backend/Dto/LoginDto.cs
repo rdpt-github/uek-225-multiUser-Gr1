@@ -1,4 +1,4 @@
-﻿namespace L_Bank_W_Backend.Core.Models
+﻿namespace L_Bank_W_Backend.Dto
 {
     public class LoginDto
     {
