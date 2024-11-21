@@ -29,29 +29,6 @@ namespace L_Bank_W_Backend.Models
 
             return false; // Lösch mich
         }
-        
-        public decimal GetTotalMoney()
-        {
-            const string query = @$"SELECT SUM(balance) AS TotalBalance FROM {Ledger.CollectionName}";
-            decimal totalBalance = 0;
-
-            using (SqlConnection conn = new SqlConnection(this.settings.ConnectionString))
-            {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    object result = cmd.ExecuteScalar();
-                    if (result != DBNull.Value)
-                    {
-                        totalBalance = Convert.ToDecimal(result);
-                    }
-                }
-            }
-
-            return totalBalance;
-        }
-
-
     }
 }
 

@@ -6,6 +6,8 @@ namespace L_Bank_W_Backend.DbAccess;
 public interface ILedgerRepository
 {
     IEnumerable<Ledger> GetAllLedgers();
+    public void Book(decimal amount, Ledger from, Ledger to);
+    decimal GetTotalMoney();
     Ledger? SelectOne(int id);
     Ledger? SelectOne(int id, SqlConnection conn, SqlTransaction? transaction);
     void Update(Ledger ledger, SqlConnection conn, SqlTransaction transaction);
