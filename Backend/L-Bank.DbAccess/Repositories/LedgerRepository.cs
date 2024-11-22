@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Data;
 using System.Data.SqlClient;
 using L_Bank_W_Backend.Core.Models;
@@ -148,7 +149,7 @@ public class LedgerRepository : ILedgerRepository
 
         return retLedger;
     }
-    
+
     public Ledger? SelectOne(int id, SqlConnection conn, SqlTransaction? transaction)
     {
         Ledger? retLedger;
@@ -172,7 +173,7 @@ public class LedgerRepository : ILedgerRepository
 
         return retLedger;
     }
-    
+
     public void Update(Ledger ledger, SqlConnection conn, SqlTransaction? transaction)
     {
         const string query = $"UPDATE {Ledger.CollectionName} SET name=@Name, balance=@Balance WHERE id=@Id";
@@ -195,5 +196,21 @@ public class LedgerRepository : ILedgerRepository
             this.Update(ledger, conn, null);
         }
     }
+    
+    public decimal? GetBalance(int ledgerId, SqlConnection conn, SqlTransaction transaction)
+    {
+        const string query = @"SELECT balance FROM ledgers WHERE id=@Id";
 
+        using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+        {
+            cmd.Parameters.AddWithValue("@Id", ledgerId);
+            object result = cmd.ExecuteScalar();
+            if (result != DBNull.Value)
+            {
+                return Convert.ToDecimal(result);
+            }
+        }
+
+        return null;
+    }
 }

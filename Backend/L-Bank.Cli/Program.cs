@@ -1,7 +1,7 @@
 ﻿using L_Bank_W_Backend.DbAccess;
 using L_Bank_W_Backend.DbAccess.Repositories;
-using L_Bank_W_Backend.Models;
 using L_Bank_W_Backend.Services;
+using L_Bank.Cli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -40,6 +40,7 @@ catch (Exception ex)
     Console.WriteLine(ex.Message);
 }
 
+
 Console.WriteLine();
 Console.WriteLine("All Ledgers:");
 var allLedgers = ledgerRepository.GetAllLedgers();
@@ -62,19 +63,6 @@ catch (Exception ex)
     Console.WriteLine(ex.Message);
 }
 
-////////////////////
-// Your Code Here
-////////////////////
+Simple.Run(ledgerRepository);
 
-Console.WriteLine();
-Console.WriteLine("Getting total money in system at the end.");
-try
-{
-    decimal startMoney = ledgerRepository.GetTotalMoney();
-    Console.WriteLine($"Total end money: {startMoney}");
-}
-catch (Exception ex)
-{
-    Console.WriteLine("Error in getting total money.");
-    Console.WriteLine(ex.Message);
-}
+// WithTransactions.Run(allLedgers, ledgerRepository);
