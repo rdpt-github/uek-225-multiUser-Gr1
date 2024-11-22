@@ -25,7 +25,7 @@ var databaseSeeder = serviceProvider.GetRequiredService<IDatabaseSeeder>();
 var ledgerRepository = serviceProvider.GetRequiredService<ILedgerRepository>();
 
 
-Console.WriteLine("The L-Bank");
+Console.WriteLine("The L-Bank.Web");
 Console.WriteLine();
 try
 {

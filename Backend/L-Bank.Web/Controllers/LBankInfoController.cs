@@ -14,7 +14,7 @@ namespace L_Bank_W_Backend.Controllers
         public Dictionary<string, string> Get()
         {
             var currentUser = HttpContext.User;
-            var ret = new Dictionary<string, string> { ["name"] = "L-Bank", ["version"] = "1" };
+            var ret = new Dictionary<string, string> { ["name"] = "L-Bank.Web", ["version"] = "1" };
             if (currentUser != null)
             {
                 foreach (var claim in currentUser.Claims)

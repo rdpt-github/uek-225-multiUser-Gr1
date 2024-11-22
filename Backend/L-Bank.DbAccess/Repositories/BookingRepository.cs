@@ -1,11 +1,7 @@
-﻿using System.Data.SqlClient;
-using System.Data;
-using L_Bank_W_Backend.Core.Models;
-using L_Bank_W_Backend.DbAccess;
+﻿using L_Bank_W_Backend.Models;
 using Microsoft.Extensions.Options;
 
-
-namespace L_Bank_W_Backend.Models
+namespace L_Bank_W_Backend.DbAccess.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
