@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using L_Bank_W_Backend.Core;
-using L_Bank_W_Backend.Core.Helper;
 using L_Bank_W_Backend.Core.Models;
+using L_Bank.Core.Helper;
 using Microsoft.Extensions.Options;
 
 namespace L_Bank_W_Backend.DbAccess

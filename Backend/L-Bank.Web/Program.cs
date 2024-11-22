@@ -5,6 +5,7 @@ using L_Bank_W_Backend.Models;
 using L_Bank_W_Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 // https://www.prowaretech.com/articles/current/asp-net-core/add-jwt-authentication-to-mvc#!
 
@@ -16,6 +17,16 @@ namespace L_Bank_W_Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+            
             builder.Services.Configure<JwtSettings>(
                 builder.Configuration.GetSection("JwtSettings")
             );
@@ -57,11 +68,21 @@ namespace L_Bank_W_Backend
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo()
+                    {
+                        Title = "My API - V1",
+                        Version = "v1"
+                    }
+                );
+            });
+            
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
+            app.UseCors("AllowAll");
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -69,8 +90,15 @@ namespace L_Bank_W_Backend
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+            else
+            {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                    options.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+                });
             }
 
             // Configure the HTTP request pipeline.

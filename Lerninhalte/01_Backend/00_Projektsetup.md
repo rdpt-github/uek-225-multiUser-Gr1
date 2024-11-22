@@ -1,16 +1,4 @@
-# Tagesprogramm - Tag 1
-- Check-in
-
-
-## 🧑‍🏫 App Aufbau
-
-
-## 🧑‍🏫 Transaktion Theorie
-
-
-## 🚀 Teambuilding
-
-## 🚀 Projektsetup
+# Projekt Setup
 
 Zum start mit dem Modul 223, müssen wir unsere Geräte bereit machen für die Entwicklung von Fullstack applikationen. Fullstack, heisst von der DB bis zum Frontend. Und mit der Datenbank fangen wir an.
 

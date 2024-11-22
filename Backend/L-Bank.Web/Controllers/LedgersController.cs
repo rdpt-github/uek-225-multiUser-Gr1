@@ -18,6 +18,7 @@ namespace L_Bank_W_Backend.Controllers
         {
             this.ledgerRepository = ledgerRepository;
         }
+        
         [HttpGet]
         [Authorize(Roles = "Administrators,Users")]
         public IEnumerable<Ledger> Get()
@@ -28,7 +29,6 @@ namespace L_Bank_W_Backend.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-
         [Authorize(Roles = "Administrators,Users")]
         public Ledger? Get(int id)
         {
