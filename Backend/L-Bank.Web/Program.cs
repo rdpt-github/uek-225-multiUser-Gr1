@@ -1,4 +1,4 @@
-using L_Bank_W_Backend.Core;
+using System.Text;
 using L_Bank_W_Backend.DbAccess;
 using L_Bank_W_Backend.DbAccess.Repositories;
 using L_Bank_W_Backend.Models;
@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-// https://www.prowaretech.com/articles/current/asp-net-core/add-jwt-authentication-to-mvc#!
-
 namespace L_Bank_W_Backend
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -35,30 +33,26 @@ namespace L_Bank_W_Backend
                 builder.Configuration.GetSection("DatabaseSettings")
             );
             
-            // Add services to the container.
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-                
-                if(jwtSettings == null || jwtSettings.Issuer == null || jwtSettings.Audience == null || jwtSettings.IssuerSigninKey == null)
+            builder.Services
+                .AddAuthentication(x =>
                 {
-                    throw new Exception("JwtSettings not found or not complete in appsettings.json");
-                }
-                
-                options.TokenValidationParameters = new TokenValidationParameters
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidAudience = jwtSettings.Audience, // NOTE: USE THE REAL DOMAIN NAME
-                    ValidIssuer = jwtSettings.Issuer, // NOTE: USE THE REAL DOMAIN NAME
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey =
-                        new SymmetricSecurityKey(
-                            System.Text.Encoding.UTF8.GetBytes(jwtSettings.IssuerSigninKey!)) // NOTE: THIS SHOULD BE A SECRET KEY NOT TO BE SHARED; REPLACE THIS GUID WITH A UNIQUE ONE
-                };
-            });
+                    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.PrivateKey)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            builder.Services.AddAuthorization();
             builder.Services.AddTransient<IDatabaseSeeder, DatabaseSeeder>();
             builder.Services.AddTransient<ILedgerRepository, LedgerRepository>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -77,10 +71,37 @@ namespace L_Bank_W_Backend
                         Version = "v1"
                     }
                 );
+                
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Enter your JWT token in this field",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                };
+
+                c.AddSecurityDefinition("Bearer", securityScheme);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                };
+
+                c.AddSecurityRequirement(securityRequirement);
             });
             
-            builder.Services.AddAuthorization();
-
             var app = builder.Build();
             app.UseCors("AllowAll");
 

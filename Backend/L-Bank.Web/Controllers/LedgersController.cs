@@ -1,4 +1,5 @@
-﻿using L_Bank_W_Backend.Core.Models;
+﻿using System.Security.Claims;
+using L_Bank_W_Backend.Core.Models;
 using L_Bank_W_Backend.DbAccess;
 using L_Bank_W_Backend.DbAccess.Repositories;
 using L_Bank_W_Backend.Models;
@@ -14,7 +15,7 @@ namespace L_Bank_W_Backend.Controllers
     {
         private readonly ILedgerRepository ledgerRepository;
 
-        LedgersController(ILedgerRepository ledgerRepository)
+        public LedgersController(ILedgerRepository ledgerRepository)
         {
             this.ledgerRepository = ledgerRepository;
         }
@@ -28,7 +29,6 @@ namespace L_Bank_W_Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         [Authorize(Roles = "Administrators,Users")]
         public Ledger? Get(int id)
         {
@@ -37,7 +37,6 @@ namespace L_Bank_W_Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         [Authorize(Roles = "Administrators")]
         public void Put(int id, [FromBody] Ledger ledger)
         {
