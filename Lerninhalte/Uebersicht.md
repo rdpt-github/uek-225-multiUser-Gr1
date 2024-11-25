@@ -1,24 +1,29 @@
 # Übersicht
 
-## [Tag 1](./Tag%201/Tagesprogramm.md)
+## Teil 1
+
 - App Aufbau (ohne Code)
 - Transaktion Theorie
 - Teamaufbau
 - Git und Projektsetup -> Readme und commit gemacht
 
-## [Tag 2](./Tag%202/Tagesprogramm.md)
+## Teil 2
+
 - Backend
   - Db Setup (Migration, Seeding etc)
   - Rollenmanagement
 - Frontend
 
-## [Tag 3](./Tag%203/Tagesprogramm.md)
+## Teil 3
+
 - Konfliktsituation
 - Projektarbeit
 
-## [Tag 4](./Tag%204/Tagesprogramm.md)
+## Teil 4
+
 - Projektarbeit
 - Komponenten bauen
 
-## [Tag 5](./Tag%205/Tagesprogramm.md)
+## Teil 5
+
 - Projektarbeit
