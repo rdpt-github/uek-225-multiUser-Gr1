@@ -37,3 +37,5 @@ z.b.:
 - Konto umbenennen
 - Kontoübersicht
 - ...
+
+Diese weiteren Features werden als Teil der LB bewertet.
