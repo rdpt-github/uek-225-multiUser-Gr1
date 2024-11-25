@@ -77,3 +77,6 @@ $RECYCLE.BIN/
 .idea
 
 launchSettings.json
+
+# Mac
+.DS_Store
