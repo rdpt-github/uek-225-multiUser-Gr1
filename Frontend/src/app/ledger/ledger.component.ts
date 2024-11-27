@@ -59,7 +59,7 @@ export class LedgerComponent implements OnInit {
   }
 
   printMoney(ledgerId : number): void {
-    if (ledgerId !== null && 0){
+    if (ledgerId !== null){
       this.ledgerService.add100ToLedger(ledgerId).subscribe(
         () => {
           this.transferMessage = 'Money printed successfully!';

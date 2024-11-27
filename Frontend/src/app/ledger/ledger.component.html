@@ -7,3 +7,17 @@
       </li>
     </ul>
   </div>
+<div>
+  <h2>Booking</h2>
+  <label for="fromLedger">From Ledger:</label>
+  <select id="fromLedger" [(ngModel)]="fromLedgerId">
+    <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
+  </select>
+
+  <label for="toLedger">To Ledger:</label>
+  <select id="toLedger" [(ngModel)]="toLedgerId">
+    <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
+  </select>
+  <input type="number" [(ngModel)]="amount">
+  <button (click)="makeTransfer()">transfer</button>
+</div>
