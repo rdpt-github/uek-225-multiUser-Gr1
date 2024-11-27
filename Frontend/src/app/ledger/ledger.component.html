@@ -3,7 +3,7 @@
     <ul>
       <li *ngFor="let ledger of ledgers">
         <strong>{{ ledger.name }}</strong>: {{ ledger.balance | currency }}
+        <button (click)="printMoney(ledger.id)">+100</button>
       </li>
     </ul>
   </div>
-  

@@ -33,4 +33,8 @@ export class LedgerService {
     };
     return this.http.post(`${this.apiUrl}/ledgers/transfer`, payload);
   }
+
+  add100ToLedger(ledgerId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/MoneyPrinter/${ledgerId}`, null);
+  }
 }

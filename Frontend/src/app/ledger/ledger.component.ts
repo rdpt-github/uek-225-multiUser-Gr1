@@ -57,4 +57,19 @@ export class LedgerComponent implements OnInit {
       this.transferMessage = 'Please fill in all fields with valid data.';
     }
   }
+
+  printMoney(ledgerId : number): void {
+    if (ledgerId !== null && 0){
+      this.ledgerService.add100ToLedger(ledgerId).subscribe(
+        () => {
+          this.transferMessage = 'Money printed successfully!';
+          this.loadLedgers();
+        },
+        (error) => {
+          this.transferMessage = `Money printing failed: ${error.error.message}`;
+          console.error('Money printing error', error);
+        }
+      );
+    }
+  }
 }
