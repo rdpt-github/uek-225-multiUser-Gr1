@@ -28,10 +28,15 @@ namespace L_Bank_W_Backend.Controllers
         {
             return await Task.Run(() =>
             {
-                IActionResult response = Ok();
-
-                // Rufen Sie "book" im "BookingService auf.
-                // Geben Sie je nach Erfolg OK() oder Conflict() zurück
+                IActionResult response;
+                
+                if(bookingRepository.Book(booking.SourceId, booking.DestinationId, booking.Amount))
+                {
+                    response = Ok();
+                } else
+                {
+                    response = Conflict();
+                }
                 return response;
             });
         }
