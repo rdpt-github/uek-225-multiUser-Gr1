@@ -58,6 +58,7 @@ namespace L_Bank_W_Backend
             builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<ILoginService, LoginService>();
             builder.Services.AddTransient<IBookingRepository, BookingRepository>();
+            builder.Services.AddTransient<IMoneyPrinterRepository, MoneyPrinterRepository>();
             
             builder.Services.AddControllers();
 
