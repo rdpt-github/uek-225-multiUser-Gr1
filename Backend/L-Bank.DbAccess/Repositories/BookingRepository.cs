@@ -12,41 +12,47 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
         {
             this.settings = settings.Value;
         }
-        
+
         public bool Book(int sourceLedgerId, int destinationLedgerId, decimal amount)
-        {
-            using (var connection = new SqlConnection(settings.ConnectionString))
             {
-                connection.Open();
-                using (var transaction = connection.BeginTransaction(IsolationLevel.Serializable))
+            bool worked;
+            do
+            {
+                using (var connection = new SqlConnection(settings.ConnectionString))
                 {
-                    try
+                    connection.Open();
+                    using (var transaction = connection.BeginTransaction(IsolationLevel.Serializable))
                     {
-                        var sourceBalance = GetLedgerBalance(connection, transaction, sourceLedgerId);
-                        if (sourceBalance < amount)
+                        try
                         {
-                            return false;
+                            var sourceBalance = GetLedgerBalance(connection, transaction, sourceLedgerId);
+                            if (sourceBalance < amount)
+                            {
+                                return false;
+                            }
+
+                            UpdateLedgerBalance(connection, transaction, sourceLedgerId, -amount);
+                            Thread.Sleep(2000);
+                            UpdateLedgerBalance(connection, transaction, destinationLedgerId, amount);
+
+                            transaction.Commit();
+                            worked = true;
                         }
-                        
-                        UpdateLedgerBalance(connection, transaction, sourceLedgerId, -amount);
-                        
-                        UpdateLedgerBalance(connection, transaction, destinationLedgerId, amount);
-                        
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        return false;
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            worked = false;
+                        }
                     }
                 }
-            }
+            } while (!worked);
+
+            return worked;
         }
 
         private decimal GetLedgerBalance(SqlConnection connection, SqlTransaction transaction, int ledgerId)
         {
-            using (var command = new SqlCommand("SELECT Balance FROM Ledgers WHERE LedgerId = @LedgerId", connection, transaction))
+            using (var command = new SqlCommand("SELECT Balance FROM Ledgers WHERE id = @LedgerId", connection, transaction))
             {
                 command.Parameters.AddWithValue("@LedgerId", ledgerId);
                 return (decimal)command.ExecuteScalar();
@@ -55,7 +61,7 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
 
         private void UpdateLedgerBalance(SqlConnection connection, SqlTransaction transaction, int ledgerId, decimal amount)
         {
-            using (var command = new SqlCommand("UPDATE Ledgers SET Balance = Balance + @Amount WHERE LedgerId = @LedgerId", connection, transaction))
+            using (var command = new SqlCommand("UPDATE Ledgers SET Balance = Balance + @Amount WHERE id = @LedgerId", connection, transaction))
             {
                 command.Parameters.AddWithValue("@LedgerId", ledgerId);
                 command.Parameters.AddWithValue("@Amount", amount);

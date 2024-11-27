@@ -13,15 +13,8 @@ namespace L_Bank_W_Backend.Controllers
 
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class BookingsController : ControllerBase
+    public class BookingsController(IBookingRepository bookingRepository) : ControllerBase
     {
-        private readonly IBookingRepository bookingRepository;
-        
-        BookingsController(IBookingRepository bookingRepository)
-        {
-            this.bookingRepository = bookingRepository;
-        }
-        
         [HttpPost]
         [Authorize(Roles = "Administrators")]
         public async Task<IActionResult> Post([FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] Booking booking)
