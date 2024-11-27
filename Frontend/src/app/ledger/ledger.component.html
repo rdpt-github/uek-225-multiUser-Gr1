@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2>Ledgers</h2>
+  <h2 class="display bi-bank"> Ledgers</h2>
   <ul class="list-group">
     <li *ngFor="let ledger of ledgers" class="list-group-item d-flex justify-content-between align-items-center">
       <div>
@@ -11,23 +11,23 @@
 </div>
 
 <div class="container mt-4">
-  <h2>Booking</h2>
+  <h2 class="bi-cash-stack"> Booking</h2>
   <div class="form-group">
-    <label for="fromLedger">From Ledger:</label>
+    <label  class="form-label" for="fromLedger">From Ledger:</label>
     <select id="fromLedger" class="form-control" [(ngModel)]="fromLedgerId">
       <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label for="toLedger">To Ledger:</label>
-    <select id="toLedger" class="form-control" [(ngModel)]="toLedgerId">
+    <label class="form-label" for="toLedger">To Ledger:</label>
+    <select id="toLedger" class="form-control bord" [(ngModel)]="toLedgerId">
       <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label for="amount">Amount:</label>
+    <label class="form-label" for="amount">Amount:</label>
     <input type="number" id="amount" class="form-control" [(ngModel)]="amount">
   </div>
 
