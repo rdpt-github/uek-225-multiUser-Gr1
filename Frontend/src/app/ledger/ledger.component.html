@@ -1,23 +1,35 @@
-<div>
-    <h2>Ledgers</h2>
-    <ul>
-      <li *ngFor="let ledger of ledgers">
+<div class="container mt-4">
+  <h2>Ledgers</h2>
+  <ul class="list-group">
+    <li *ngFor="let ledger of ledgers" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
         <strong>{{ ledger.name }}</strong>: {{ ledger.balance | currency }}
-        <button (click)="printMoney(ledger.id)">+100</button>
-      </li>
-    </ul>
-  </div>
-<div>
-  <h2>Booking</h2>
-  <label for="fromLedger">From Ledger:</label>
-  <select id="fromLedger" [(ngModel)]="fromLedgerId">
-    <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
-  </select>
+      </div>
+      <button class="btn btn-primary btn-sm" (click)="printMoney(ledger.id)">+100</button>
+    </li>
+  </ul>
+</div>
 
-  <label for="toLedger">To Ledger:</label>
-  <select id="toLedger" [(ngModel)]="toLedgerId">
-    <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
-  </select>
-  <input type="number" [(ngModel)]="amount">
-  <button (click)="makeTransfer()">transfer</button>
+<div class="container mt-4">
+  <h2>Booking</h2>
+  <div class="form-group">
+    <label for="fromLedger">From Ledger:</label>
+    <select id="fromLedger" class="form-control" [(ngModel)]="fromLedgerId">
+      <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="toLedger">To Ledger:</label>
+    <select id="toLedger" class="form-control" [(ngModel)]="toLedgerId">
+      <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" class="form-control" [(ngModel)]="amount">
+  </div>
+
+  <button class="btn btn-success mt-2" (click)="makeTransfer()">Transfer</button>
 </div>
