@@ -18,7 +18,7 @@ namespace L_Bank_W_Backend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrators")]
-        public async Task<IActionResult> Post(int id, int[] numbers)
+        public async Task<IActionResult> Put(int id, [FromBody] int[] numbers)
         {
             var result = CalculateWin(numbers);
 
