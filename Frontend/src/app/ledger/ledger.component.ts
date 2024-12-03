@@ -31,8 +31,8 @@ export class LedgerComponent implements OnInit {
   }
 
   loadLedgers(): void {
-    this.ledgerService.getLedgers().subscribe(
-      (data) => (this.ledgers = data),
+   this.ledgerService.getLedgers().subscribe(
+     (data) => (this.ledgers = data),
       (error) => console.error('Error fetching ledgers', error)
     );
   }

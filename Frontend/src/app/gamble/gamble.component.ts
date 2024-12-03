@@ -1,10 +1,11 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {GambleService} from '../../services/gamble.service';
 import {Ledger} from '../../models/ledger.model';
 import {NgForOf} from '@angular/common';
 import {LedgerService} from '../../services/ledger.service';
 import {GambleResultModel} from '../../models/gambleResult.model';
+import {tap} from 'rxjs';
 
 declare function rollDice(arg: any): void;
 
@@ -18,12 +19,16 @@ declare function rollDice(arg: any): void;
     NgForOf
   ],
 })
-export class GambleComponent {
+export class GambleComponent implements OnInit {
   ledgerService = inject(LedgerService);
   ledgers: Ledger[] = [];
   numbers!: number[];
-  id : number | null = null;
-  result!: GambleResultModel;
+  id: number | null = null;
+  result: GambleResultModel = {
+    winAmount: 69,
+    correctNumbers: 2
+  }
+
   constructor(private gambleService: GambleService) {
   }
 
@@ -33,27 +38,26 @@ export class GambleComponent {
 
   loadLedgers(): void {
     this.ledgerService.getLedgers().subscribe(
-      (data) => (this.ledgers = data),
-      (error) => console.error('Error fetching ledgers', error)
+      {
+        error: (error) => console.error('Error fetching ledgers', error),
+        next: (data: Ledger[]) => this.ledgers = data
+      }
     );
   }
 
-  roll3Dice(){
+  roll3Dice() {
     this.numbers = [];
-    for (let i=0; i<3; i++) {
+    for (let i = 0; i < 3; i++) {
       const randomNumbers = Math.floor(Math.random() * 6) + 1;
       this.numbers.push(randomNumbers);
     }
+    console.log(this.numbers);
 
+    this.gambleService.gamble(this.id!, this.numbers).pipe(tap((data: GambleResultModel) => {
+      this.result = data
+    })).subscribe();
+
+    console.log(this.result);
     rollDice(this.numbers);
-    this.gambleService.gamble(this.id!, this.numbers).subscribe({
-      next: (response: any) => {
-        this.result = response;
-      }
-    })
-
-
   }
-
-
 }

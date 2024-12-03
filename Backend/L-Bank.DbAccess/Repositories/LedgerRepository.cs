@@ -29,7 +29,7 @@ public class LedgerRepository : ILedgerRepository
                     from.Balance -= amount;
                     this.Update(from, conn, transaction);
                    // Complicate calculations
-                    Thread.Sleep(250);
+                    //Thread.Sleep(250);
                     to.Balance = this.GetBalance(to.Id, conn, transaction) ?? throw new ArgumentNullException();
                     to.Balance += amount;
                     this.Update(to, conn, transaction);

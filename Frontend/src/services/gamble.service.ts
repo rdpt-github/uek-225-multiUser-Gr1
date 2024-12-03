@@ -15,10 +15,6 @@ export class GambleService {
 
   gamble(id: number, numbers: number[]): Observable<GambleResultModel> {
     const token = this.authService.getToken();
-    if (token) {
-      return this.http.get<GambleResultModel>(`${this.apiUrl}/gamble/{id}`);
-    }
-
-    return new Observable<GambleResultModel>();
+    return this.http.put<GambleResultModel>(`${this.apiUrl}/gamble/${id}`, numbers);
   }
 }

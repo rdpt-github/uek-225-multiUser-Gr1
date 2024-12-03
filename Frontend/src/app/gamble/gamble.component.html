@@ -121,5 +121,5 @@
     <button class="btn btn-success" (click)="roll3Dice()">Roll Dice</button>
 </div>
 
-<h4 class="text-warning">Result: {{result.CorrectNumbers}} </h4>
-<h4 class="text-warning">Won: {{result.WinAmount}} </h4>
+<h4 class="text-warning">Result: {{result? result.correctNumbers : 0 }} </h4>
+<h4 class="text-warning">Won: {{ result? result.winAmount : 0}}  </h4>

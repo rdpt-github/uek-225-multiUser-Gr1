@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace L_Bank_W_Backend.DbAccess.Repositories;
 
-public class GambleRepository
+public class GambleRepository : IGambleRepository
 {
     DatabaseSettings settings;
     public GambleRepository(IOptions<DatabaseSettings> settings)
@@ -25,7 +25,6 @@ public class GambleRepository
                     try
                     {
                         UpdateLedgerBalance(connection, transaction, ledgerId, amount);
-                        Thread.Sleep(2000);
                         transaction.Commit();
                         worked = true;
                     }

@@ -1,4 +1,4 @@
 ﻿export interface GambleResultModel {
-  CorrectNumbers: number;
-  WinAmount: number;
+  correctNumbers: number;
+  winAmount: number;
 }
