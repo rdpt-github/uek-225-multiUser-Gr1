@@ -37,4 +37,12 @@ export class LedgerService {
   add100ToLedger(ledgerId: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/MoneyPrinter/${ledgerId}`, null);
   }
+
+  createLedger(ledger: Ledger): Observable<any> {
+    const payload = {
+      Name: ledger.name,
+      Balance: ledger.balance,
+    };
+    return this.http.post(`${this.apiUrl}/ledgers`, payload);
+  }
 }

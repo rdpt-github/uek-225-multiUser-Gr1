@@ -11,6 +11,18 @@
 </div>
 
 <div class="container mt-4">
+  <h2 class="bi-plus-circle"> Create Ledger</h2>
+  <div class="form-group">
+    <label class="form-label" for="ledgerName">Name:</label>
+    <input type="text" id="ledgerName" class="form-control" [(ngModel)]="ledgerName">
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="initialBalance">Initial Balance:</label>
+    <input type="number" id="initialBalance" class="form-control" [(ngModel)]="balance">
+  <button class="btn btn-primary" (click)="createLedger()">Create Ledger</button>
+</div>
+  
+<div class="container mt-4">
   <h2 class="bi-cash-stack"> Booking</h2>
   <div class="form-group">
     <label  class="form-label" for="fromLedger">From Ledger:</label>

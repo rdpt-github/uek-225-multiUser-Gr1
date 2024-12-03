@@ -246,4 +246,19 @@ public class LedgerRepository : ILedgerRepository
 
         return null;
     }
+    
+    public void Create(Ledger ledger)
+    {
+        const string query = "INSERT INTO ledgers (name, balance) VALUES (@Name, @Balance)";
+        using (SqlConnection conn = new SqlConnection(this.databaseSettings.ConnectionString))
+        {
+            conn.Open();
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Name", ledger.Name);
+                cmd.Parameters.AddWithValue("@Balance", ledger.Balance);
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
 }

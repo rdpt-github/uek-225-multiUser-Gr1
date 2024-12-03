@@ -42,5 +42,12 @@ namespace L_Bank_W_Backend.Controllers
         {
             this.ledgerRepository.Update(ledger);
         }
+        
+        [HttpPost]
+        [Authorize(Roles = "Administrators")]
+        public void Post([FromBody] Ledger ledger)
+        {
+            this.ledgerRepository.Create(ledger);
+        }
     }
 }

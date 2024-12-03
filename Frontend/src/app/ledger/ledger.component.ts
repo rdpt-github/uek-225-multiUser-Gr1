@@ -20,6 +20,8 @@ export class LedgerComponent implements OnInit {
   toLedgerId: number | null = null;
   amount: number | null = null;
   transferMessage: string = '';
+  ledgerName: string = '';
+  balance: number | null = null;
 
   constructor(private ledgerService: LedgerService) {}
 
@@ -70,6 +72,30 @@ export class LedgerComponent implements OnInit {
           console.error('Money printing error', error);
         }
       );
+    }
+  }
+
+  createLedger(): void {
+    if (this.ledgerName && this.balance !== null) {
+      const newLedger: Ledger = {
+        id: 0, // The ID will be set by the backend
+        name: this.ledgerName,
+        balance: this.balance
+      };
+      this.ledgerService.createLedger(newLedger).subscribe(
+        () => {
+          this.transferMessage = 'Ledger created successfully!';
+          this.loadLedgers();
+          this.ledgerName = '';
+          this.balance = null;
+        },
+        (error: { error: { message: any; }; }) => {
+          this.transferMessage = `Ledger creation failed: ${error.error.message}`;
+          console.error('Ledger creation error', error);
+        }
+      );
+    } else {
+      this.transferMessage = 'Please provide a valid name and balance.';
     }
   }
 }
