@@ -1,0 +1,125 @@
+<div class="container bg-light rounded-5">
+  <div class="dice">
+    <ol class="die-list even-roll" data-roll="1" id="die-1">
+      <li class="die-item" data-side="1">
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="2">
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="3">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="4">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="5">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="6">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+    </ol>
+    <ol class="die-list odd-roll" data-roll="1" id="die-2">
+      <li class="die-item" data-side="1">
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="2">
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="3">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="4">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="5">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="6">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+    </ol>
+    <ol class="die-list odd-roll" data-roll="1" id="die-3">
+      <li class="die-item" data-side="1">
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="2">
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="3">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="4">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="5">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+      <li class="die-item" data-side="6">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="form-group">
+  <label  class="form-label" for="fromLedger">From Ledger:</label>
+  <select id="fromLedger" class="form-control" [(ngModel)]="id">
+    <option *ngFor="let ledger of ledgers" [value]="ledger.id">{{ ledger.name }}</option>
+  </select>
+</div>
+
+<br>
+
+<div class="container">
+    <button class="btn btn-success" (click)="roll3Dice()">Roll Dice</button>
+</div>
+
+<h4 class="text-warning">Result: {{result.CorrectNumbers}} </h4>
+<h4 class="text-warning">Won: {{result.WinAmount}} </h4>

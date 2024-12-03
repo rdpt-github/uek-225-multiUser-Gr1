@@ -40,8 +40,12 @@
 
   <div class="form-group">
     <label class="form-label" for="amount">Amount:</label>
-    <input type="number" id="amount" class="form-control" [(ngModel)]="amount">
+    <input class="form-control" type="number" id="amount"  [(ngModel)]="amount">
   </div>
-
+  <br>
   <button class="btn btn-success mt-2" (click)="makeTransfer()">Transfer</button>
+
+  <hr>
+
+  <app-gamble></app-gamble>
 </div>

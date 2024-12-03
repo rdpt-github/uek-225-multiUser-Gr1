@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {GambleComponent} from '../gamble/gamble.component';
 
 @Component({
   selector: 'app-ledger',
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.css'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, GambleComponent],
   standalone: true,
   providers:  [ LedgerService, HttpClient ]
 })
