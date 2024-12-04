@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {GambleService} from '../../services/gamble.service';
 import {Ledger} from '../../models/ledger.model';
@@ -6,6 +6,7 @@ import {NgForOf} from '@angular/common';
 import {LedgerService} from '../../services/ledger.service';
 import {GambleResultModel} from '../../models/gambleResult.model';
 import {tap} from 'rxjs';
+import {DiceComponent} from './dice/dice.component';
 
 declare function rollDice(arg: any): void;
 
@@ -16,7 +17,8 @@ declare function rollDice(arg: any): void;
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf
+    NgForOf,
+    DiceComponent
   ],
 })
 export class GambleComponent implements OnInit {
@@ -58,6 +60,6 @@ export class GambleComponent implements OnInit {
     })).subscribe();
 
     console.log(this.result);
-    rollDice(this.numbers);
+    rollDice([this.numbers[0], this.numbers[1], this.numbers[2]]);
   }
 }
