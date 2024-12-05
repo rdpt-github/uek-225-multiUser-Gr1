@@ -1,47 +1,74 @@
-﻿using L_Bank_W_Backend.DbAccess.Repositories;
-using L_Bank_W_Backend.Core.Models;
-using Moq;
-using System.Data.SqlClient;
-using L_Bank_W_Backend.DbAccess;
+﻿using L_Bank_W_Backend.Core.Models;
+using L_Bank.EfCore;
+using L_Bank.EfCore.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
-using Xunit;
+using Moq;
+using Xunit.Abstractions;
 
-public class LedgerRepositoryTests
+namespace TestProject1;
+
+public class LedgerRepositoryTest
 {
-    private readonly LedgerRepository _ledgerRepository;
-    private readonly IOptions<DatabaseSettings> _settings;
+    private readonly Mock<IOptions<DatabaseSettings>> _databaseSettingsMock;
+    private readonly ITestOutputHelper _testOutputHelper;
 
-    public LedgerRepositoryTests()
+    public LedgerRepositoryTest(ITestOutputHelper testOutputHelper)
     {
-        _settings = Options.Create(new DatabaseSettings
+        _testOutputHelper = testOutputHelper;
+        _databaseSettingsMock = new Mock<IOptions<DatabaseSettings>>();
+        _databaseSettingsMock.Setup(x => x.Value).Returns(new DatabaseSettings
         {
-            ConnectionString = "Server=localhost,1433;Database=l_bank_backend;User Id=sa;Password=YourPassword123;"
+            ConnectionString =
+                "Server=localhost,1433;Database=l_bank_backend;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;"
         });
-        _ledgerRepository = new LedgerRepository(_settings);
     }
 
     [Fact]
     public void Create_ShouldAddNewLedger()
     {
+        var options = new DbContextOptionsBuilder<LBankDbContext>()
+            .UseInMemoryDatabase("TestDatabase")
+            .ConfigureWarnings(x =>
+                x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+            .Options;
+
+
+        using var context = new LBankDbContext(options);
+        context.Database.EnsureCreatedAsync();
+
+        var ledgerRepository = new LedgerRepository(context);
         // Arrange
         var ledger = new Ledger { Name = "Test Ledger", Balance = 100 };
 
         // Act
-        _ledgerRepository.Create(ledger);
+        ledgerRepository.Create(ledger);
 
         // Assert
-        var loadedLedger = _ledgerRepository.FindLedgerByName(ledger.Name);
+        var loadedLedger = context.Ledgers.FirstOrDefault(l => ledger.Id == l.Id);
         Assert.NotNull(loadedLedger);
-        _ledgerRepository.Delete(loadedLedger!.Id);
     }
-    
+
     [Fact]
     public void Create_ShouldThrowSqlException()
     {
+        var options = new DbContextOptionsBuilder<LBankDbContext>()
+            .UseInMemoryDatabase("TestDatabase")
+            .ConfigureWarnings(x =>
+                x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+            .Options;
+
+
+        using var context = new LBankDbContext(options);
+        context.Database.EnsureCreatedAsync();
+
+        var ledgerRepository = new LedgerRepository(context);
+
         // Arrange
         var ledger = new Ledger { Name = null, Balance = 0 };
 
         // Act & Assert
-        Assert.Throws<SqlException>(() => _ledgerRepository.Create(ledger));
+        Assert.Throws<ArgumentException>(() => ledgerRepository.Create(ledger));
     }
 }

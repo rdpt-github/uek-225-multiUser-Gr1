@@ -1,4 +1,4 @@
-namespace L_Bank_W_Backend.DbAccess;
+﻿namespace L_Bank.EfCore;
 
 public class DatabaseSettings
 {
