@@ -16,6 +16,7 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
         public bool Book(int sourceLedgerId, int destinationLedgerId, decimal amount)
             {
             bool worked;
+            bool found = false;
             do
             {
                 using (var connection = new SqlConnection(settings.ConnectionString))
@@ -25,14 +26,12 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
                     {
                         try
                         {
-                            var sourceBalance = GetLedgerBalance(connection, transaction, sourceLedgerId);
+                            var sourceBalance = GetLedgerBalance(connection, transaction, sourceLedgerId, found);
                             if (sourceBalance < amount)
                             {
                                 return false;
                             }
-
                             UpdateLedgerBalance(connection, transaction, sourceLedgerId, -amount);
-                            Thread.Sleep(2000);
                             UpdateLedgerBalance(connection, transaction, destinationLedgerId, amount);
 
                             transaction.Commit();
@@ -40,6 +39,11 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
                         }
                         catch (Exception)
                         {
+                            if (found == false)
+                            {
+                                return false;
+                            }
+
                             transaction.Rollback();
                             worked = false;
                         }
@@ -50,12 +54,18 @@ namespace L_Bank_W_Backend.DbAccess.Repositories
             return worked;
         }
 
-        private decimal GetLedgerBalance(SqlConnection connection, SqlTransaction transaction, int ledgerId)
+        private decimal GetLedgerBalance(SqlConnection connection, SqlTransaction transaction, int ledgerId, bool found)
         {
             using (var command = new SqlCommand("SELECT Balance FROM Ledgers WHERE id = @LedgerId", connection, transaction))
             {
                 command.Parameters.AddWithValue("@LedgerId", ledgerId);
-                return (decimal)command.ExecuteScalar();
+                decimal balance = (decimal)command.ExecuteScalar();
+                if (balance == default)
+                {
+                    found = false;
+                }
+                found = true;
+                return balance;
             }
         }
 

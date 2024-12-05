@@ -261,4 +261,18 @@ public class LedgerRepository : ILedgerRepository
             }
         }
     }
+    
+    public void Delete(int id)
+    {
+        const string query = "DELETE FROM ledgers WHERE id=@Id";
+        using (SqlConnection conn = new SqlConnection(this.databaseSettings.ConnectionString))
+        {
+            conn.Open();
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
 }
