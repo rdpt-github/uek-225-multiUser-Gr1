@@ -23,6 +23,8 @@ Im Web-Projekt befindet sich die eigentliche Applikationsschicht sowie auch die 
 
 Im Testing-Projekt wird die Logik sowie auch die Integration mithilfe von Unit-Tests getestet.
 
+Ebenso wird für den BookingsController ein Lasttest eingesetzt. Dafür haben wir wie von den Unterlagen empfohlen NBomber verwendet. Beim Lasttests wird so viele Requests für verschiedene zufällig erstellte Transaktionen abgesendet wie möglich. Es werden aktuell ein bisschen weniger als 80 Requests pro Sekunde erreicht und die Requests laufen alle Erfolgreich durch.
+
 ### 2. Starten
 
 Die Applikation wird wie folgt gestartet:
