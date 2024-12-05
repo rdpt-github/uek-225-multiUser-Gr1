@@ -64,7 +64,11 @@ namespace LBank.Tests.Loadtest.Cli
                         second = ledgers[random.Next(ledgers.Count - 1)];
                     }
 
-                    var amount = (decimal) random.Next((int)Math.Floor(first.Balance));
+                    decimal amount = 0;
+                    if (first.Balance > 0)
+                    {
+                        amount = random.Next((int)Math.Floor(first.Balance));
+                    }
                     var booking = new Booking();
                     booking.SourceId = first.Id;
                     booking.DestinationId = second.Id;
