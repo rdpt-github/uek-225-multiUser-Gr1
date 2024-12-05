@@ -275,4 +275,32 @@ public class LedgerRepository : ILedgerRepository
             }
         }
     }
+
+    public Ledger FindLedgerByName(String name)
+    {
+        Ledger? retLedger;
+        const string query = "SELECT id, name, balance FROM ledgers WHERE name=@Name";
+        using (SqlConnection conn = new SqlConnection(this.databaseSettings.ConnectionString))
+        {
+            conn.Open();
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Name", name);
+                cmd.ExecuteNonQuery();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.Read())
+                        throw new Exception($"No Ledger with name {name}");
+
+                    int ordId = reader.GetInt32(reader.GetOrdinal("id"));
+                    string ordName = reader.GetString(reader.GetOrdinal("name"));
+                    decimal ordBalance = reader.GetDecimal(reader.GetOrdinal("balance"));
+
+                    retLedger = new Ledger { Id = ordId, Name = ordName, Balance = ordBalance };
+                }
+            }
+        }
+
+        return retLedger;
+    }
 }

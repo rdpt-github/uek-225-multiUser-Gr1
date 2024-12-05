@@ -1,8 +1,6 @@
-﻿using L_Bank_W_Backend.Core.Models;
-using L_Bank_W_Backend.DbAccess.Repositories;
+﻿using L_Bank.EfCore.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace L_Bank_W_Backend.Controllers;
 
@@ -17,14 +15,11 @@ public class MoneyPrinterController(IMoneyPrinterRepository moneyPrinterReposito
         return await Task.Run(() =>
         {
             IActionResult response;
-                
-            if(moneyPrinterRepository.Add100(id))
-            {
+
+            if (moneyPrinterRepository.Add100(id))
                 response = Ok();
-            } else
-            {
+            else
                 response = Conflict();
-            }
             return response;
         });
     }
