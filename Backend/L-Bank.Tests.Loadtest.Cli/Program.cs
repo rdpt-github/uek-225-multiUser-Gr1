@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -10,7 +11,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FSharp.Json;
 using L_Bank_W_Backend.Core.Models;
+using Microsoft.FSharp.Core;
 using Microsoft.IdentityModel.JsonWebTokens;
+using NBomber.Contracts;
 using NBomber.Contracts.Stats;
 using NBomber.CSharp;
 using NBomber.Http.CSharp;
@@ -63,16 +66,20 @@ namespace LBank.Tests.Loadtest.Cli
                     {
                         second = ledgers[random.Next(ledgers.Count - 1)];
                     }
-
                     decimal amount = 0;
-                    if (first.Balance > 0)
+                    // Due to the fact that the balance and no more transactions being allowed if thats the case,
+                    // we would get conflicts so we cancel this transaction
+                    if (first.Balance <= 0)
                     {
-                        amount = random.Next((int)Math.Floor(first.Balance));
+                     return new Response<HttpResponseMessage>("200", false, 0, "Aborted, Negative or 0 Balance", FSharpOption<HttpResponseMessage>.None);
                     }
-                    var booking = new Booking();
-                    booking.SourceId = first.Id;
-                    booking.DestinationId = second.Id;
-                    booking.Amount = amount;
+                    amount = random.Next(0, (int)Math.Floor(first.Balance));
+                    var booking = new Booking
+                    {
+                        SourceId = first.Id,
+                        DestinationId = second.Id,
+                        Amount = amount
+                    };
                     var options = new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true,
@@ -80,10 +87,9 @@ namespace LBank.Tests.Loadtest.Cli
                     };
                     var jsonContent = JsonSerializer.Serialize(booking, options);
                     var request = Http.CreateRequest("POST", "http://localhost:5000/api/v1/bookings")
-                        .WithBody(new StringContent(jsonContent, Encoding.UTF8, "application/json")); 
-
+                        .WithBody(new StringContent(jsonContent, Encoding.UTF8, "application/json"));
+                    
                     var response = await Http.Send(httpClient, request);
-
                     return response;
                 })
                 .WithoutWarmUp();

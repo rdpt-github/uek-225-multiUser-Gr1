@@ -39,7 +39,11 @@ Die Applikation wird wie folgt gestartet:
 
 Ein grosses Problem bei Multiuser-Applikationen ist, dass gleichzeitige Zugriffe auf die Datenbank von mehreren Personen zu Fehlern führen kann. Dies zeigt sich in etwa so, dass Beispielsweise Geld abgebucht werden kann, obwohl das Gelb parallel bereits abgebucht wurde und so der Kontostand in den Negtivbereich rutscht.
 
+Auf ein weiteres Problem sind wir bei den Lasttests gestossen. Da wir Negative Beträge auf den Konten erlauben werden zum Teil Konflikte erzeugt welche wir eigentlich erwarten.
+
 #### 3.1 Lösung
 
 Die Lösung dieses Problems ist, die verschiedenen Datenbankzugriffe jeweils in einer Transaktion zu machen. Für unser Beispiel eignet sich dabei das Isolationlevel Serializable. Dies bewirkt, dass die zuerst gestartete Transaktion abgeschlossen wird und anschliessend erst die zweite Transaktion gestartet wird. Dies bewirkt, dass es zu keiner Überschreibung bei den Verbuchungen und somit bei den Datenbankzugriffen kommen kann. Um zu garantieren, dass die Transaktion auch wirklich durchgeführt wird, wurde die Transaktion in einer Do-While-Schlaufe platziert. Dies löst das Problem, dass die Transaktion nochmals versucht wird, führte jedoch bei den Tests zu Problemen. Dies lösten wir so, dass wir einen Boolean implementierten, welcher false ist, wenn keine passende Entity gefunden wurde und so die der Loop mithilfe dieses Bools unterbrochen werden kann. Bei unseren Zusatzfeatures wurde die Problematik gleich angegangen und gelöst.
+
+Die Lösung bei den Lasttests war es für uns die Zufallsgenerierten Requests auf Konten welche Schulden haben abzubrechen und dies mit einer speziellen Response zu deklarieren. Eine weitere Lösung wäre gewesen Geld vor den Lasttests zu generieren oder keine Schulden zu erlauben was jedoch auch nicht garantiert keine Konflikte ausgelöst hätte, da eine Transaktion mit keinem Geld auf dem Konto auch nicht erlaubt wäre.
 
