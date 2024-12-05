@@ -12,7 +12,7 @@ public class BookingRepository(LBankDbContext dbContext) : IBookingRepository
             {
                 var sourceLedger = dbContext.Ledgers.FirstOrDefault(l => l.Id == sourceLedgerId);
                 var destinationLedger = dbContext.Ledgers.FirstOrDefault(l => l.Id == destinationLedgerId);
-                if (sourceLedger!.Balance <= amount) return false;
+                if (sourceLedger!.Balance < amount) return false;
 
                 sourceLedger.Balance -= amount;
                 dbContext.SaveChanges();

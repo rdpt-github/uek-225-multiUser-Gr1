@@ -1,14 +1,12 @@
 ﻿using L_Bank_W_Backend.Controllers;
 using L_Bank_W_Backend.Core.Models;
-using L_Bank_W_Backend.DbAccess.Repositories;
-using Microsoft.AspNetCore.Mvc;
+using L_Bank.EfCore.Repositories;
 using Moq;
-using Xunit;
 
 public class LedgersControllerTest
 {
-    private readonly Mock<ILedgerRepository> mockLedgerRepository;
     private readonly LedgersController ledgersController;
+    private readonly Mock<ILedgerRepository> mockLedgerRepository;
 
     public LedgersControllerTest()
     {
